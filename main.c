@@ -1,6 +1,8 @@
 //Author:Floriana Melania Munteanu
 //Student Number:20349023
 #include <stdio.h>
+#include "printBoard.h"
+#include "checkMove.h"
 
 //initialise the board
 struct board{
@@ -9,28 +11,18 @@ struct board{
     char arr[8][8];
 };
 //initialise the players
-/*enum discColour {
-    Black = 'B';
-    White = 'W';
-    Empty = ' ';
-};*/
 struct player{
     char name[20];
     int score;
     char disc;
 };
-/*struct player2{
-    char name[20];
-    int score;
-    enum discColour White;
-};*/
 
+struct player player1, player2;
+struct board board;
 
 int main() {
 
-    struct player player1, player2;
-    size_t i, j;
-
+    int i, j;
 
     printf("\t*** Welcome to Othello! ***\n");
 
@@ -45,30 +37,73 @@ int main() {
     player2.score = 2;
 
     //print out the board
-    printf("\n\tScore: %s (Black) 2:2 %s (White)\n", player1.name, player2.name);
-    for(i = 0; i < 1; i++){
-        for(j = 0; j < 3; j++){
-            printf("\t    --- --- --- --- --- --- --- ---\n");
-            printf("\t%d  |   |   |   |   |   |   |   |   |\n", j+1);
+    //printBoard(player1.name, player2.name);
+
+    //initialise the board
+    for(i=0; i<8; i++){
+        for(j=0; j<8; j++){
+            board.arr[i][j] = '*';
         }
-        printf("\t    --- --- --- --- --- --- --- ---\n");
-        printf("\t%d  |   |   |   | W | B |   |   |   |\n", j+1);
-        printf("\t    --- --- --- --- --- --- --- ---\n");
-        printf("\t%d  |   |   |   | B | W |   |   |   |\n", j+2);
     }
-    for(j = 0; j < 3; j++){
-        printf("\t    --- --- --- --- --- --- --- ---\n");
-        printf("\t%d  |   |   |   |   |   |   |   |   |\n", j+6);
-    }
-    printf("\t    --- --- --- --- --- --- --- ---\n");
-    printf("\t     a   b   c   d   e   f   g   h  \n");
+    board.arr[3][3] = 'W';
+    board.arr[4][3] = 'B';
+    board.arr[3][4] = 'B';
+    board.arr[4][4] = 'W';
 
-
-
-
-
+    /*for(i=0; i<8; i++){
+        for(j=0; j<8; j++){
+            printf("%c ", board.arr[i][j]);
+        }
+        printf("\n");
+    }*/
 
     //play the game
+    int k = -1, m, count;
+
+    while (player1.score + player2.score < 64){
+        printf("Player 1:\n");
+
+        do{
+            printf("Choose a move: ");
+            scanf("%c%d", &board.letter, &board.number);
+            i = (int)(board.letter) - 97;
+            j = board.number - 1;
+            k = checkMove(i,j,board.arr, player1.disc, player2.disc);
+        }while(k == -1);
+
+        board.arr[i][j] = player1.disc;
+        count = 0;
+
+        for(m = i + 1; m < k; m++){
+            board.arr[m][j] = player1.disc;
+            count++;
+        }
+
+        player1.score += count;
+        player2.score -= count;
+
+        printf("Player 2:\n");
+
+        do{
+            printf("Choose a move: ");
+            scanf("%c%d", &board.letter, &board.number);
+            i = (int)(board.letter) - 97;
+            j = board.number - 1;
+            k = checkMove(i,j,board.arr, player2.disc, player1.disc);
+        }while(k == -1);
+
+        board.arr[i][j] = player2.disc;
+        count = 0;
+
+        for(m = i + 1; m < k; m++){
+            board.arr[m][j] = player2.disc;
+            count++;
+        }
+
+        player2.score += count;
+        player1.score -= count;
+    }
+
     //determine winner
     //print out the results
     //print the result to a file
