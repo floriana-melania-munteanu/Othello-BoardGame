@@ -1,6 +1,6 @@
 #ifndef ASSIGN2_PRINTBOARD_H
 #define ASSIGN2_PRINTBOARD_H
 
-void printBoard (char name1[20], char name2[20]);
+void printBoard (char arr[8][8]);
 
 #endif //ASSIGN2_PRINTBOARD_H
