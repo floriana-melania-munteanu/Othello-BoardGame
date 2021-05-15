@@ -2,20 +2,24 @@
 //Student Number:20349023
 #include <stdio.h>
 #include "printBoard.h"
-#include "checkMove.h"
+#include "game.h"
+#define SIZE 8
+
 int checkMove (int i, int j, char playerDisc, char opponentDisc);
-//initialise the board
+
+//define the board struct
 struct board{
     char letter;
     int number;
-    char arr[8][8];
+    char arr[SIZE][SIZE];
 };
-//initialise the players
+//define the player struct
 struct player{
     char name[20];
     int score;
     char disc;
 };
+
 
 struct player player1, player2;
 struct board board;
@@ -36,8 +40,21 @@ int main() {
     player2.disc = 'W';
     player2.score = 2;
 
+    //initialise the board
+    for(i=0; i<SIZE; i++){
+        for(j=0; j<SIZE; j++){
+            board.arr[i][j] = '*';
+        }
+    }
+    board.arr[3][3] = 'W';
+    board.arr[4][3] = 'B';
+    board.arr[3][4] = 'B';
+    board.arr[4][4] = 'W';
+
     //print out the board
-    printf("\n\tScore: %s (Black) 2:2 %s (White)\n", player1.name, player2.name);
+    printf("\nScore: %s (Black) 2:2 %s (White)\n", player1.name, player2.name);
+    printBoard(board.arr);
+    /*printf("\n\tScore: %s (Black) 2:2 %s (White)\n", player1.name, player2.name);
     for(i = 0; i < 1; i++){
         for(j = 0; j < 3; j++){
             printf("\t    --- --- --- --- --- --- --- ---\n");
@@ -53,27 +70,16 @@ int main() {
         printf("\t%d  |   |   |   |   |   |   |   |   |\n", j+6);
     }
     printf("\t    --- --- --- --- --- --- --- ---\n");
-    printf("\t     a   b   c   d   e   f   g   h  \n");
-
-    //initialise the board
-    for(i=0; i<8; i++){
-        for(j=0; j<8; j++){
-            board.arr[i][j] = '*';
-        }
-    }
-    board.arr[3][3] = 'W';
-    board.arr[4][3] = 'B';
-    board.arr[3][4] = 'B';
-    board.arr[4][4] = 'W';
+    printf("\t     a   b   c   d   e   f   g   h  \n");*/
 
 
     //play the game
-    int k;
+    int k, a, b;
 
     while (player1.score + player2.score < 64){
         k = -1;
         while (k == -1){
-            printf("Player 1:\n");
+            printf("\nPlayer 1 (Black):\n");
             printf("Choose a move:");
             scanf("%1s%d", &board.letter, &board.number);
             i = board.number - 1;
@@ -84,7 +90,7 @@ int main() {
 
         printBoard(board.arr);
 
-        printf("k = %d\n", k);
+        //printf("k = %d\n", k);
         player1.score += k;
         player2.score -= (k-1);
         printf("Player 1 score %d\nPlayer 2 score %d\n", player1.score, player2.score);
@@ -92,7 +98,7 @@ int main() {
         if(player1.score + player2.score < 64){
             k = -1;
             while (k == -1){
-                printf("Player 2:\n");
+                printf("\nPlayer 2 (White):\n");
                 printf("Choose a move:");
                 scanf("%1s%d", &board.letter, &board.number);
                 i = board.number - 1;
@@ -102,7 +108,7 @@ int main() {
 
             printBoard(board.arr);
 
-            printf("k = %d\n", k);
+            //printf("k = %d\n", k);
             player2.score += k;
             player1.score -= (k-1);
             printf("Player 1 score %d\nPlayer 2 score %d\n", player1.score, player2.score);
@@ -124,175 +130,4 @@ int main() {
     //print out the final board
     //print the result to a file
 
-}
-
-int checkMove (int i, int j, char playerDisc, char opponentDisc) {
-    int k, l, m, n;
-    int count;
-    if (board.arr[i][j] == '*') {
-        //check to the right
-        if (board.arr[i][j+1] == opponentDisc) {
-            k = j + 2;
-            while (board.arr[i][k] != playerDisc && k < 8) {
-                k++;
-            }
-            if (board.arr[i][k] == playerDisc) {
-                board.arr[i][j] = playerDisc;
-                count = 0;
-                count++;
-                for(m = j + 1; m < k; m++){
-                    board.arr[i][m] = playerDisc;
-                    count++;
-                }
-                return count;
-            }
-        }
-        //check to the left
-        else if (board.arr[i][j-1] == opponentDisc){
-            k = j-2;
-            while (board.arr[i][k] != playerDisc && k >= 0) {
-                k--;
-            }
-            if(board.arr[i][k] == playerDisc){
-                board.arr[i][j] = playerDisc;
-                count = 0;
-                count++;
-                for(m = j - 1; m >= k; m--){
-                    board.arr[i][m] = playerDisc;
-                    count++;
-                }
-                return count;
-            }
-        }
-        //check above
-        else if (board.arr[i-1][j] == opponentDisc){
-            k = i-2;
-            while (board.arr[k][j] != playerDisc && k >= 0){
-                k--;
-            }
-            if(board.arr[k][j] == playerDisc){
-                board.arr[i][j] = playerDisc;
-                count = 0;
-                count++;
-                for(m = i - 1; m < k; m--){
-                    board.arr[m][j] = playerDisc;
-                    count++;
-                }
-                return count;
-            }
-        }
-        //check below
-        else if (board.arr[i+1][j] == opponentDisc){
-            k = i+2;
-            while(board.arr[k][j] != playerDisc && k < 8){
-                k++;
-            }
-            if(board.arr[k][j] == playerDisc){
-                board.arr[i][j] = playerDisc;
-                count = 0;
-                count++;
-                for(m = i+1; m < k; m++){
-                    board.arr[m][j] = playerDisc;
-                    count++;
-                }
-                return count;
-            }
-        }
-        //check upper right corner
-        else if (board.arr[i-1][j+1] == opponentDisc){
-            k = i-2;
-            l = j+2;
-            while (board.arr[k][l] != playerDisc && k >= 0 && l<8){
-                k--;
-                l++;
-            }
-            if(board.arr[k][l] == playerDisc){
-                board.arr[i][j] = playerDisc;
-                count = 0;
-                count++;
-                m = i - 1;
-                n = j + 1;
-                while(m < k && n < l){
-                    board.arr[m][n] = playerDisc;
-                    count++;
-                    m--;
-                    n++;
-                }
-                return count;
-            }
-        }
-        //check upper left
-        else if (board.arr[i-1][j-1] == opponentDisc){
-            k = i-2;
-            l = j-2;
-            while(board.arr[k][l] != playerDisc && k >= 0 && l >= 8){
-                k--;
-                l--;
-            }
-            if (board.arr[k][l] == playerDisc){
-                board.arr[i][j] = playerDisc;
-                count = 0;
-                count++;
-                m = i-1;
-                n = j-1;
-                while (m < k && n < l){
-                    board.arr[m][n] = playerDisc;
-                    count++;
-                    m--;
-                    n--;
-                }
-                return count;
-            }
-        }
-        //check lower right
-        else if (board.arr[i+1][j+1] == opponentDisc){
-            k = i + 2;
-            l = j + 2;
-            while(board.arr[k][l] != playerDisc && k < 8 && l < 8){
-                k++;
-                l++;
-            }
-            if (board.arr[k][l] == playerDisc){
-                board.arr[i][j] = playerDisc;
-                count = 0;
-                count++;
-                m = i+1;
-                n = j+1;
-                while(m < k && n < l){
-                    board.arr[m][n] = playerDisc;
-                    count++;
-                    m++;
-                    n++;
-                }
-                return count;
-            }
-        }
-        //check lower left
-        else if (board.arr[i+1][j-1] == opponentDisc){
-            k = i+2;
-            l = j-2;
-            while(board.arr[k][l] != playerDisc && k < 8 && l >= 0){
-                k++;
-                j--;
-            }
-            if (board.arr[k][l] == playerDisc){
-                board.arr[i][j] = playerDisc;
-                count = 0;
-                count++;
-                m = i + 1;
-                n = j - 1;
-                while (m < k && n < l){
-                    board.arr[m][n] = playerDisc;
-                    count++;
-                    m++;
-                    n--;
-                }
-                return count;
-            }
-        }
-        else{
-            printf("Invalid move!");
-            return -1;
-        }
-    }
 }
