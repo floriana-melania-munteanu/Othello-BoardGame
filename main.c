@@ -1,6 +1,7 @@
 //Author:Floriana Melania Munteanu
 //Student Number:20349023
 #include <stdio.h>
+#include <time.h>
 #include "printBoard.h"
 #include "game.h"
 #define SIZE 8
@@ -24,7 +25,7 @@ struct player{
 struct player player1, player2;
 struct board board;
 
-int main() {
+int main(int argc, char *argv[]) {
 
     int i, j;
 
@@ -76,7 +77,7 @@ int main() {
     //play the game
     int k, a, b;
 
-    while (player1.score + player2.score < 64){
+    /*while (player1.score + player2.score < 64){
         k = -1;
         while (k == -1){
             printf("\nPlayer 1 (Black):\n");
@@ -113,21 +114,44 @@ int main() {
             player1.score -= (k-1);
             printf("Player 1 score %d\nPlayer 2 score %d\n", player1.score, player2.score);
         }
+    }*/
+
+    //print the result to a file
+    FILE *fp;
+    if(argc > 1){
+        if((fp = fopen(argv[1], "w")) == NULL){
+            puts("The file cannot be opened for writing\n");
+            return 1;
+        }
+        else{
+            time_t t;
+            time(&t);
+            fprintf(fp, "Time: %s\n", ctime(&t));
+            //determine winner and print out the results
+            if (player1.score > player2.score){
+                printf("Player 1 (%s) wins!\n", player1.name);
+                printf("The winning score is %d.\n", player1.score);
+                //add the winner and its score to the file
+                fprintf(fp, "%s", player1.name);
+                fprintf(fp, "%d\n", player1.score);
+            }
+            else if (player1.score < player2.score){
+                printf("Player 2 (%s) wins!\n", player2.name);
+                printf("The winning score is %d.\n", player2.score);
+                //add the winner and its score to a file
+                fprintf(fp, "%s", player2.name);
+                fprintf(fp, "%d\n", player2.score);
+            }
+            else if (player1.score == player2.score){
+                printf("It's a tie. Nobody wins!");
+                //add the result of the game to the file
+                fprintf(fp, "It's a tie!\n");
+            }
+        }
     }
 
-    //determine winner and print out the results
-    if (player1.score > player2.score){
-        printf("Player 1 (%s) wins!\n", player1.name);
-        printf("The winning score is %d.\n", player1.score);
-    }
-    else if (player1.score < player2.score){
-        printf("Player 2 (%s) wins!\n", player2.name);
-        printf("The winning score is %d.\n", player2.score);
-    }
-    else if (player1.score == player2.score){
-        printf("It's a tie. Nobody wins!");
-    }
     //print out the final board
-    //print the result to a file
+    printf("The final board:\n");
+    printBoard(board.arr);
 
 }
