@@ -1,10 +1,13 @@
 #include "printBoard.h"
 #include <stdio.h>
-void printBoard (char arr[8][8]){
+#define SIZE 8 //size of the board
+
+/* function definition for printing the board */
+void printBoard (char arr[SIZE][SIZE]){
     int i, j;
-    for(i=0; i<8; i++){
-        printf("%d  ", i+1);
-        for(j=0; j<8; j++){
+    for(i = 0; i < SIZE; i++){
+        printf("%d  ", i + 1);
+        for(j = 0; j < SIZE; j++){
             printf("%c ", arr[i][j]);
         }
         printf("\n");
