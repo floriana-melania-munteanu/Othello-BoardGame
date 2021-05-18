@@ -1,0 +1,136 @@
+Software Engineering Assignment 2 - Othello Board-Game
+Floriana Melania Munteanu - 20349023 
+
+To understand the game and find what variables I'm going to need in order to implement Othello, I played the game on paper multiple times.
+Through these games I made the following observations:
+   The main components I had to take into consideration in order to find the solution of this program were:
+      - how to represent the board and the players
+      - how to find/identify a valid move
+      - how to implement a valid move (play the game)
+      - what conditions the game loop needs to know when the game is over
+
+
+
+Both the board and the players are represented by structs.
+   The board contains: - a char and an int meant to store the coordinates of the move the player chooses
+                       - a char 2D array that represents the 64 squares on the board
+   
+   The 2D array is then initialised with '*' to represent an empty square and then with the 4 initial discs placed in the middle of the board.
+   
+   The player is asked to enter a move in the format LD(letter-digit) where L goes for a-h and D from 1-8.
+   These coordinates need to be converted to fit the coordinates of a 2D array.  
+   Therefore, the (digit - 1) is assigned to the row component of the array, and the letter to the column.
+   To convert the letter to an integer we subtract 97 (ASCII: a - 97, b - 98, c - 99...) and then we convert if from a char to an int.
+   
+   The player contains: a char array to store the name of the player
+                        an int for the score
+                        a char that will be either 'B' or 'W' representing the colour assigned to the player
+
+
+
+A valid move is:
+   - an empty square where if we place a disc, between another disc of the same colour, there are in the same direction one or more discs of the opposite colour
+   - there are 8 possible directions: to the left, to the right, above, below, right upper corner, left upper corner, right lower corner, left lower corner 
+
+While there are still empty squares and valid moves exist, the game can keep going.
+   To check if there are empty squares we check if the scores added together are less than 64. 
+   To check if there are valid moves on the board there is the function validMoves which takes in - the board array
+                                                                                                  - the disc colour of the player 
+                                                                                                  - the disc colour of the opponent
+   
+   Going from the top (0-0) of the board to the bottom (7-7) the function searches in all the 8th possible directions for a valid move.
+   If there are valid moves, the function returns the number of moves, if there aren't any it's the next players turn.
+
+   Initially there are 4 possible move for the first player (Black) and so, the variable which stores the number of valid moves for the first player is assigned 4, to 
+   fulfil all the conditions necessary to enter the game loop.
+
+The pseudo code for this function is:
+int validMoves(char array, char playerDisc, char opponentDisc){
+  for(i=0; i<8; i++){
+    for(j=0; j<8; j++){
+        if(the square is not empty){
+           continue;
+        }
+        if(there is an opponent disc to the right){
+           while(within the board parameters){
+                check if there is a players disc in the same direction
+                if there is 
+                    increase valid moves count
+                if not or an empty square is reached
+                    break
+           }
+         similarly check for the other 7 possible directions
+     }
+   }
+   return the number of valid moves
+}       
+
+
+          
+Another function called implementMove takes on the coordinates entered by the player together with the board array, the coordiantes of the move,
+the disc colour of the player and the disc of the opponent, checks if the move is valid and if so implements it. The function returns the total number of discs turned by the given move.
+ 
+If the count for discs turned is 0 or the square isn't empty it means the move wasn't valid and the user is prompted to enter another move until a valid one. 
+When the move is not valid the function returns the value -1.
+k is the variable that stores the value returned by implementMove and it is assigned -1 to enter the loop that's asking the player to enter a move.
+
+int implementMoves (char array, int x, int y, char playerDisc, char opponentDis){
+    if the square is empty
+       if there is an opponent disc to the right
+           while within the board parameters
+              if there is a players disc in the same direction
+                  the move is valid -> assign the players disc to the move chosen by the user
+                  starting with the next square in the same direction until the player's next disc
+                      turn all the opponent's discs in between
+                      increase the count of the discs turned
+       check the other 7 possible directions the same way
+       if the number of discs turned is 0 after checking all the 8th directions
+           the move is not valid
+        return -1
+
+    else (the square not empty)
+        the move is invalid 
+        return -1
+
+   return the number of discs turned    
+}  
+
+
+
+All these being said the pseudo code for playing the game looks something like this:
+while (empty squares and valid moves){
+     k = -1;
+     if(there are valid moves for the first player){
+          while(k==-1){
+               ask player for a move;
+               update k;
+          }
+          update and display the scores;
+     }
+     else{
+          no valid moves for the first player, skip to the next
+     }
+     
+     print the updated board;
+     k = -1;
+     if(there are valid moves for the second player){
+          while(k==-1){
+               ask player for a move;
+               update k;
+          }
+          update and display the scores;
+     }
+     else{
+          no valid moves for the second player, skip to the next
+     }
+
+     print the updated board;
+}
+
+
+
+Deciding the winner involves just comparing the two score and adding the result to a text file is pretty straight forward too.
+          
+
+
+ 

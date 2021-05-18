@@ -68,7 +68,7 @@ int main(){
     while (player1.score + player2.score < 64 && (a > 0 || b > 0)){
 
         //validMove counts the valid moves on the board
-        a = validMove(board.arr, player1.disc, player2.disc);
+        a = validMoves(board.arr, player1.disc, player2.disc);
 
         //if the move is invalid function implementMove returns -1
         k = -1;
@@ -105,7 +105,7 @@ int main(){
         k = -1; //assign -1 to k so that the while loop is entered
 
         //check if there are valid move on the board for player2
-        b = validMove(board.arr, player2.disc, player1.disc);
+        b = validMoves(board.arr, player2.disc, player1.disc);
 
         //if there are valid moves ask the player for a move, the same as for player1
         if(b > 0) {
@@ -124,7 +124,7 @@ int main(){
         }
         //else display that there are no valid moves for this player and go to the next one
         else {
-            printf("No valid move! Next player's turn.");
+            printf("No valid move! Next player's turn.\n");
         }
 
         //display the updated board
@@ -141,24 +141,24 @@ int main(){
         //add current time to the file
         time_t t;
         time(&t);
-        fprintf(fp, "Time: %s\n", ctime(&t));
+        fprintf(fp, "Time: %s", ctime(&t)); //ctime() displays a string containing the current date and time
 
         //determine winner and print out the results
         if (player1.score > player2.score){
             printf("Player 1 (%s) wins!\n", player1.name);
             printf("The winning score is %d.\n", player1.score);
 
-            //add the winner and its score to the file
-            fprintf(fp, "%s", player1.name);
-            fprintf(fp, "%d\n", player1.score);
+            //add the winner and their score to the file
+            fprintf(fp, "Winner - %s\n", player1.name);
+            fprintf(fp, "Score - %d\n", player1.score);
         }
         else if (player1.score < player2.score){
             printf("Player 2 (%s) wins!\n", player2.name);
             printf("The winning score is %d.\n", player2.score);
 
-            //add the winner and its score to a file
-            fprintf(fp, "Name: %s ", player2.name);
-            fprintf(fp, "score: %d\n", player2.score);
+            //add the winner and their score to a file
+            fprintf(fp, "Winner - %s\n", player2.name);
+            fprintf(fp, "Score - %d\n", player2.score);
         }
         else if (player1.score == player2.score){
             printf("It's a tie. Nobody wins!\n");
@@ -175,6 +175,3 @@ int main(){
 
     return 0;
 }
-//for the rows co-ordinate we subtract 1
-//for the columns we convert the letter char to the appropriate number char by subtracting 97
-//and that number char is then converted into an int

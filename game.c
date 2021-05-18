@@ -3,7 +3,7 @@
 #define SIZE 8 //the size of the board
 
 //function definition for counting the valid moves for a player
-int validMove (char board[SIZE][SIZE], char playerDisc, char opponentDisc){
+int validMoves (char board[SIZE][SIZE], char playerDisc, char opponentDisc){
     int validMoves_count = 0; //stores the number of valid moves
     int i, j, k, l;
 

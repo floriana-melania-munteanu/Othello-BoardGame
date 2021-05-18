@@ -2,7 +2,7 @@
 #include <stdio.h>
 #define SIZE 8 //size of the board
 
-/* function definition for printing the board */
+// function definition for printing the board
 void printBoard (char arr[SIZE][SIZE]){
     int i, j;
     for(i = 0; i < SIZE; i++){

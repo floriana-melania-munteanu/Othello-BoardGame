@@ -1,15 +1,5 @@
-Time: Mon May 17 14:15:22 2021
-
-Name: bee score: 3
-Time: Mon May 17 14:21:02 2021
-
-Name: Bee score: 3
-Time: Mon May 17 15:43:55 2021
-
-Name: bee score: 3
-Time: Mon May 17 15:47:05 2021
-
-Name: bee score: 3
 Time: Mon May 17 17:15:55 2021
+Name: Maria score: 42
 
-Name: b score: 42
+Time: Mon May 17 22:21:15 2021
+It's a tie!
